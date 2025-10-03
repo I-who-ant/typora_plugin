@@ -2428,6 +2428,10 @@ UPLOAD_CNBLOG_HOTKEY = ""
 #   留空则不设置快捷键
 UPLOAD_CSDN_HOTKEY = ""
 
+# 一键上传到 Astro 博客的快捷键设置
+#   留空则不设置快捷键
+UPLOAD_ASTRO_HOTKEY = ""
+
 # ------------------- 上传相关 -------------------
 [article_uploader.upload]
 # 是否在上传之前弹出确认框，防止误操作
@@ -2460,6 +2464,15 @@ cnblog = { enabled = true, username = "demo2", password = "demo2" }
 #   cookie:  用于登录 CSDN 的 Cookie 信息，可能需要定期更新 (可以在浏览器开发者工具中找到)
 #   **注意：该 Cookie 的有效期可能较短，请定期更新，建议两周到一个月更新一次**
 csdn = { enabled = true, cookie = "log_Id_pv=27; log_Id_view=857; dc_tos=se1n4s; log_Id_click=37......" }
+
+# 自建 Astro 博客上传配置
+#   enabled: 是否启用上传
+#   repo_root: 本地 Astro 仓库根目录
+#   posts_dir: Markdown 存储目录（相对于仓库根目录）
+#   filename_pattern: 文件命名模板，支持 {date} 与 {slug}
+#   auto_commit: 上传后是否执行 Git 命令
+#   git_cmd: Git 命令模板，支持 {filename} 占位符
+astro = { enabled = true, repo_root = "D:/projects/seeback-astro", posts_dir = "src/content/posts", filename_pattern = "{date}-{slug}.md", auto_commit = false, git_cmd = "git add {filename}" }
 
 
 ################### ripgrep ###################

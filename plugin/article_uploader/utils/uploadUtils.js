@@ -15,6 +15,12 @@ class UploadUtils {
         }
     }
 
+    lazyLoadYaml = () => {
+        if (!this.yaml) {
+            this.yaml = require('../../global/core/lib/js-yaml');
+        }
+    }
+
     // 生成UUID
     generateUUID() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -29,20 +35,48 @@ class UploadUtils {
         const notification = new Notification();
         try {
             const fs = this.plugin.utils.Package.Fs;
-            const data = fs.readFileSync(filePath, 'utf-8');
-            const lines = data.split('\n');
-            const title = lines[0].trim().replace(/#/g, '').trim();
-            const content = lines.slice(1).join('\n').trim();
-            if (title === "" || content === '') {
-                throw new Error("内容为空");
+            const data = fs.readFileSync(filePath, 'utf-8').trim();
+            if (!data) {
+                throw new Error('文件内容为空');
             }
-            const extraData = "";  // TODO: 取出标签，分类，封面图等
+
+            const { title, content, extraData } = this.extractWithFrontmatter(data);
+            if (title === '' || content.trim() === '') {
+                throw new Error('缺少标题或正文');
+            }
             return { title, content, extraData };
         } catch (error) {
             notification.showNotification('文件格式读取失败', "error");
             console.error('Error reading file:', error);
             return null;
         }
+    }
+
+    extractWithFrontmatter = (raw) => {
+        const delimiter = /^---\s*$/m;
+        if (raw.startsWith('---')) {
+            const parts = raw.split(delimiter);
+            if (parts.length >= 3) {
+                const frontmatter = parts[1];
+                const body = parts.slice(2).join('\n').trim();
+                this.lazyLoadYaml();
+                const meta = this.yaml.load(frontmatter) || {};
+                const title = (meta.title || '').toString().trim() || this.extractTitleFromBody(body);
+                return { title, content: body, extraData: meta };
+            }
+        }
+
+        const lines = raw.split('\n');
+        const title = this.cleanHeading(lines[0]);
+        const content = lines.slice(1).join('\n');
+        return { title, content, extraData: {} };
+    }
+
+    cleanHeading = (line = '') => line.trim().replace(/^#+/, '').trim();
+
+    extractTitleFromBody = (body = '') => {
+        const match = body.match(/^#\s*(.+)$/m);
+        return match ? match[1].trim() : '';
     }
 
     // 获取签名

@@ -12,6 +12,7 @@ class UploadController {
             cnblog: "../uploader/CnBlogUploader",
             csdn: "../uploader/CsdnUploader",
             wordpress: "../uploader/WordpressUploader",
+            astro: "../uploader/AstroUploader",
         }
 
         this.init();

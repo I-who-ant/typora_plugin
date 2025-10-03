@@ -4,6 +4,7 @@ class ArticleUploaderPlugin extends BasePlugin {
             { act_value: "upload_to_csdn" },
             { act_value: "upload_to_wordpress" },
             { act_value: "upload_to_cn_blog" },
+            { act_value: "upload_to_astro" },
             { act_value: "upload_to_all_site" },
         ])
     }
@@ -12,6 +13,7 @@ class ArticleUploaderPlugin extends BasePlugin {
         { hotkey: this.config.UPLOAD_CSDN_HOTKEY, callback: () => this.call("upload_to_csdn") },
         { hotkey: this.config.UPLOAD_CNBLOG_HOTKEY, callback: () => this.call("upload_to_cn_blog") },
         { hotkey: this.config.UPLOAD_WORDPRESS_HOTKEY, callback: () => this.call("upload_to_wordpress") },
+        { hotkey: this.config.UPLOAD_ASTRO_HOTKEY, callback: () => this.call("upload_to_astro") },
         { hotkey: this.config.UPLOAD_ALL_HOTKEY, callback: () => this.call("upload_to_all_site") },
     ]
 
@@ -20,6 +22,7 @@ class ArticleUploaderPlugin extends BasePlugin {
             upload_to_csdn: "csdn",
             upload_to_wordpress: "wordpress",
             upload_to_cn_blog: "cnblog",
+            upload_to_astro: "astro",
             upload_to_all_site: "all"
         }
         const act = map[action]

@@ -15,6 +15,7 @@
 - [x] CSDN
 - [x] 博客园
 - [x] WordPress
+- [x] Astro（写入本地 Content Collections）
 
 - [ ] vitepress&hexo
 - [ ] 微信公众号
@@ -84,6 +85,21 @@
 
 2. 配置个人信息，这些信息在`plugin\global\settings\settings.default.toml`文件的 `article_uploader` 配置，参照注释
 
+   - Astro 集成示例：
+
+     ```toml
+     [article_uploader.upload]
+     astro = {
+       enabled = true,
+       repo_root = "D:/projects/seeback-astro",
+       posts_dir = "src/content/posts",
+       filename_pattern = "{date}-{slug}.md",
+       auto_commit = false,
+       git_cmd = "git add {filename}"
+     }
+     ```
+
+     Typora 文档若包含 YAML frontmatter（`---`），插件会保留其中的 `title`、`date`、`excerpt`、`tags` 等字段；若没有 frontmatter，则默认将首行 `#` 作为标题，其余正文写入 Astro Content Collections。
 
 
 关于cookie的获取，登录后随便找个异步请求把所有cookie值粘过来即可

@@ -5,7 +5,7 @@ class Plugin2UploadBridge {
     constructor(plugin) {
         this.plugin = plugin;
         this.config = plugin.config;
-        this.sites = ["cnblog", "csdn", "wordpress"];
+        this.sites = ["cnblog", "csdn", "wordpress", "astro"];
         this.utils = null;
         this.uploadController = null;
         this.notification = null;
