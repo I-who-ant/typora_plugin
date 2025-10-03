@@ -16,8 +16,22 @@ class UploadUtils {
     }
 
     lazyLoadYaml = () => {
-        if (!this.yaml) {
-            this.yaml = require('../../global/core/lib/js-yaml');
+        if (this.yaml) {
+            return;
+        }
+        try {
+            this.yaml = require('../../global/core/lib/js-yaml.js');
+        } catch (error) {
+            try {
+                this.yaml = require('../../global/core/lib/js-yaml');
+            } catch (innerError) {
+                const utils = this.plugin && this.plugin.utils;
+                if (utils && typeof utils.requireFilePath === 'function') {
+                    this.yaml = utils.requireFilePath('./plugin/global/core/lib/js-yaml.js');
+                } else {
+                    throw error;
+                }
+            }
         }
     }
 
