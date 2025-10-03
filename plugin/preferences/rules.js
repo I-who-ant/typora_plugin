@@ -108,6 +108,9 @@ module.exports = {
         "upload.cnblog.username": required,
         "upload.cnblog.password": required,
         "upload.csdn.cookie": required,
+        "upload.astro.repo_root": [required, path],
+        "upload.astro.posts_dir": required,
+        "upload.astro.filename_pattern": required,
     },
     json_rpc: {
         "SERVER_OPTIONS.host": required,

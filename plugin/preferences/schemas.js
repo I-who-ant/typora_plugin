@@ -1099,11 +1099,12 @@ const SETTING_SCHEMAS = {
             Switch("HIDE"),
         ),
         TitledBox(
-            Title("hotkey", { dependencies: { $or: [{ $follow: "UPLOAD_CNBLOG_HOTKEY" }, { $follow: "UPLOAD_WORDPRESS_HOTKEY" }, { $follow: "UPLOAD_CSDN_HOTKEY" }] } }),
-            Hotkey("UPLOAD_ALL_HOTKEY", { dependencies: { $or: [{ "upload.cnblog.enabled": true }, { "upload.wordpress.enabled": true }, { "upload.csdn.enabled": true }] } }),
+            Title("hotkey", { dependencies: { $or: [{ $follow: "UPLOAD_CNBLOG_HOTKEY" }, { $follow: "UPLOAD_WORDPRESS_HOTKEY" }, { $follow: "UPLOAD_CSDN_HOTKEY" }, { $follow: "UPLOAD_ASTRO_HOTKEY" }] } }),
+            Hotkey("UPLOAD_ALL_HOTKEY", { dependencies: { $or: [{ "upload.cnblog.enabled": true }, { "upload.wordpress.enabled": true }, { "upload.csdn.enabled": true }, { "upload.astro.enabled": true }] } }),
             Hotkey("UPLOAD_CNBLOG_HOTKEY", { dependencies: { "upload.cnblog.enabled": true } }),
             Hotkey("UPLOAD_WORDPRESS_HOTKEY", { dependencies: { "upload.wordpress.enabled": true } }),
             Hotkey("UPLOAD_CSDN_HOTKEY", { dependencies: { "upload.csdn.enabled": true } }),
+            Hotkey("UPLOAD_ASTRO_HOTKEY", { dependencies: { "upload.astro.enabled": true } }),
         ),
         TitledBox(
             Title("upload"),
@@ -1128,6 +1129,15 @@ const SETTING_SCHEMAS = {
             Title("csdn"),
             Switch("upload.csdn.enabled"),
             Text("upload.csdn.cookie", { dependencies: { "upload.csdn.enabled": true } }),
+        ),
+        TitledBox(
+            Title("astro"),
+            Switch("upload.astro.enabled"),
+            Text("upload.astro.repo_root", { dependencies: { "upload.astro.enabled": true } }),
+            Text("upload.astro.posts_dir", { dependencies: { "upload.astro.enabled": true } }),
+            Text("upload.astro.filename_pattern", { dependencies: { "upload.astro.enabled": true } }),
+            Switch("upload.astro.auto_commit", { dependencies: { "upload.astro.enabled": true } }),
+            Text("upload.astro.git_cmd", { dependencies: { "upload.astro.enabled": true, "upload.astro.auto_commit": true } }),
         ),
         UntitledBox(
             Action("viewArticleUploaderReadme"),
