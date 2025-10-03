@@ -1,0 +1,188 @@
+[window_tab]
+CLOSE_HOTKEY = [ "ctrl+w" ]
+SWITCH_NEXT_TAB_HOTKEY = [ "ctrl+PageDown", "ctrl+Tab" ]
+SWITCH_PREVIOUS_TAB_HOTKEY = [ "ctrl+PageUp", "ctrl+shift+Tab" ]
+SORT_TABS_HOTKEY = []
+TOGGLE_TAB_BAR_HOTKEY = []
+COPY_PATH_HOTKEY = []
+CONTEXT_MENU = [ "closeTab", "closeOtherTabs", "closeLeftTabs", "closeRightTabs", "sortTabs", "copyPath", "showInFinder", "openInNewWindow" ]
+
+[file_counter]
+ALLOW_EXT = [ "", "md", "markdown", "mdown", "mmd", "text", "txt", "rmarkdown", "mkd", "mdwn", "mdtxt", "rmd", "mdtext", "apib" ]
+IGNORE_FOLDERS = [ ".git", ".idea", "node_modules" ]
+
+[auto_number]
+ENABLE = false
+
+[[auto_number.LAYOUTS]]
+name = "Layout::Decimal-H1"
+selected = false
+
+[auto_number.LAYOUTS.layout]
+content-h1 = "{c1}. "
+content-h2 = "{c1}.{c2} "
+content-h3 = "{c1}.{c2}.{c3} "
+content-h4 = "{c1}.{c2}.{c3}.{c4} "
+content-h5 = "{c1}.{c2}.{c3}.{c4}.{c5} "
+content-h6 = "{c1}.{c2}.{c3}.{c4}.{c5}.{c6} "
+outline-h1 = "{o1}. "
+outline-h2 = "{o1}.{o2} "
+outline-h3 = "{o1}.{o2}.{o3} "
+outline-h4 = "{o1}.{o2}.{o3}.{o4} "
+outline-h5 = "{o1}.{o2}.{o3}.{o4}.{o5} "
+outline-h6 = "{o1}.{o2}.{o3}.{o4}.{o5}.{o6} "
+toc-h1 = "{t1}. "
+toc-h2 = "{t1}.{t2} "
+toc-h3 = "{t1}.{t2}.{t3} "
+toc-h4 = "{t1}.{t2}.{t3}.{t4} "
+toc-h5 = "{t1}.{t2}.{t3}.{t4}.{t5} "
+toc-h6 = "{t1}.{t2}.{t3}.{t4}.{t5}.{t6} "
+table = "Table {t}"
+image = "Image {i}"
+fence = "Fence {f}"
+
+[[auto_number.LAYOUTS]]
+name = "Layout::Decimal-H2"
+selected = true
+
+[auto_number.LAYOUTS.layout]
+content-h1 = ""
+content-h2 = "{c2}. "
+content-h3 = "{c2}.{c3} "
+content-h4 = "{c2}.{c3}.{c4} "
+content-h5 = "{c2}.{c3}.{c4}.{c5} "
+content-h6 = "{c2}.{c3}.{c4}.{c5}.{c6} "
+outline-h1 = ""
+outline-h2 = "{o2}. "
+outline-h3 = "{o2}.{o3} "
+outline-h4 = "{o2}.{o3}.{o4} "
+outline-h5 = "{o2}.{o3}.{o4}.{o5} "
+outline-h6 = "{o2}.{o3}.{o4}.{o5}.{o6} "
+toc-h1 = ""
+toc-h2 = "{t2}. "
+toc-h3 = "{t2}.{t3} "
+toc-h4 = "{t2}.{t3}.{t4} "
+toc-h5 = "{t2}.{t3}.{t4}.{t5} "
+toc-h6 = "{t2}.{t3}.{t4}.{t5}.{t6} "
+table = "Table {t}"
+image = "Image {i}"
+fence = "Fence {f}"
+
+[[auto_number.LAYOUTS]]
+name = "Layout::RomanNumeral"
+selected = false
+
+[auto_number.LAYOUTS.layout]
+content-h1 = "{c1:ur}. "
+content-h2 = "{c2:ua}. "
+content-h3 = "{c3}. "
+content-h4 = "{c4:la}. "
+content-h5 = "({c5}). "
+content-h6 = "({c6:la}). "
+outline-h1 = "{o1:ur}. "
+outline-h2 = "{o2:ua}. "
+outline-h3 = "{o3}. "
+outline-h4 = "{o4:la}. "
+outline-h5 = "({o5}). "
+outline-h6 = "({o6:la}). "
+toc-h1 = "{t1:ur}. "
+toc-h2 = "{t2:ua}. "
+toc-h3 = "{t3}. "
+toc-h4 = "{t4:la}. "
+toc-h5 = "({t5}). "
+toc-h6 = "({t6:la}). "
+table = "Table {t}"
+image = "Image {i}"
+fence = "Fence {f}"
+
+[[auto_number.LAYOUTS]]
+name = "Layout::ChineseThesis"
+selected = false
+
+[auto_number.LAYOUTS.layout]
+content-h1 = "{c1:cjk}、"
+content-h2 = "（{c2:cjk}）"
+content-h3 = "{c3}. "
+content-h4 = "（{c4}）"
+content-h5 = "{c5}）"
+content-h6 = "{c6:ua}. "
+outline-h1 = "{o1:cjk}、"
+outline-h2 = "（{o2:cjk}）"
+outline-h3 = "{o3}. "
+outline-h4 = "（{o4}）"
+outline-h5 = "{o5}）"
+outline-h6 = "{o6:ua}. "
+toc-h1 = "{t1:cjk}、"
+toc-h2 = "（{t2:cjk}）"
+toc-h3 = "{t3}. "
+toc-h4 = "（{t4}）"
+toc-h5 = "{t5}）"
+toc-h6 = "{t6:ua}. "
+table = "表 {t}"
+image = "图 {i}"
+fence = "代码 {f}"
+
+[[auto_number.LAYOUTS]]
+name = "Layout::None"
+selected = false
+
+[auto_number.LAYOUTS.layout]
+content-h1 = ""
+content-h2 = ""
+content-h3 = ""
+content-h4 = ""
+content-h5 = ""
+content-h6 = ""
+outline-h1 = ""
+outline-h2 = ""
+outline-h3 = ""
+outline-h4 = ""
+outline-h5 = ""
+outline-h6 = ""
+toc-h1 = ""
+toc-h2 = ""
+toc-h3 = ""
+toc-h4 = ""
+toc-h5 = ""
+toc-h6 = ""
+table = ""
+image = ""
+fence = ""
+
+[fence_enhance]
+AUTO_HIDE = true
+CUSTOM_BUTTONS = []
+CUSTOM_HOTKEYS = []
+
+[article_uploader]
+ENABLE = true
+
+[article_uploader.upload]
+reconfirm = true
+
+[article_uploader.upload.selenium]
+headless = true
+
+[article_uploader.upload.wordpress]
+enabled = true
+hostname = "https://blog.bugdesigner.cn"
+loginUrl = "https://blog.bugdesigner.cn/superman/"
+username = "demo"
+password = "demo1"
+
+[article_uploader.upload.cnblog]
+enabled = true
+username = "demo2"
+password = "demo2"
+
+[article_uploader.upload.csdn]
+enabled = true
+cookie = "log_Id_pv=27; log_Id_view=857; dc_tos=se1n4s; log_Id_click=37......"
+
+[article_uploader.upload.astro]
+enabled = true
+repo_root = "/home/seeback/learingProject/seeback/blog/starlight-main/examples/seeback-astro"
+posts_dir = "src/content/posts"
+filename_pattern = "{date}-{slug}.md"
+auto_commit = false
+git_cmd = "git add {filename}"
