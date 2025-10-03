@@ -1,7 +1,9 @@
 const fs = require('fs');
+const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const BaseUploaderInterface = require('./BaseUploaderInterface');
+const Notification = require('../utils/customNotification.js').plugin;
 
 /**
  * 将 Typora 当前 Markdown 推送到本地 Astro 博客。
@@ -33,7 +35,7 @@ class AstroUploader extends BaseUploaderInterface {
         fs.writeFileSync(targetPath, `${frontmatter}\n${body}\n`, 'utf-8');
 
         if (cfg.auto_commit && cfg.git_cmd) {
-            this.runGitCommands(cfg.git_cmd, repoRoot, filename);
+            await this.runGitCommands(cfg.git_cmd, repoRoot, filename);
         }
     }
 
@@ -89,9 +91,16 @@ class AstroUploader extends BaseUploaderInterface {
         return (text || '').replace(/'/g, "''");
     }
 
-    runGitCommands(cmd, cwd, filename) {
+    async runGitCommands(cmd, cwd, filename) {
+        const notification = new Notification();
         const replaced = cmd.replaceAll('{filename}', filename);
-        execSync(replaced, { cwd, stdio: 'inherit', shell: true });
+        try {
+            execSync(replaced, { cwd, stdio: 'inherit', shell: true });
+            notification.showNotification(`Git 操作成功: ${replaced}`, 'success');
+        } catch (error) {
+            notification.showNotification(`Git 操作失败: ${error.message}`, 'error');
+            throw error;
+        }
     }
 }
 
