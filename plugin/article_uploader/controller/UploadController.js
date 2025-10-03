@@ -19,22 +19,30 @@ class UploadController {
     }
 
     init = () => {
-        if (!this.options) {
-            const chrome = require('selenium-webdriver/chrome');
-            this.options = new chrome.Options();
-            this.options.addArguments(
-                '--disable-blink-features=AutomationControlled',
-                '--disable-infobars',
-                '--disable-extensions',
-                '--disable-gpu',
-                '--no-sandbox',
-                '--disable-dev-shm-usage',
-                '--disable-javascript'
-            );
-        }
+        const seleniumSites = ['cnblog', 'csdn', 'wordpress'];
+        const needsSelenium = seleniumSites.some((site) => {
+            const cfg = this.config?.upload?.[site];
+            return cfg && cfg.enabled;
+        });
 
-        if (this.config.upload.selenium.headless) {
-            this.options.addArguments("--headless");
+        if (needsSelenium) {
+            if (!this.options) {
+                const chrome = require('selenium-webdriver/chrome');
+                this.options = new chrome.Options();
+                this.options.addArguments(
+                    '--disable-blink-features=AutomationControlled',
+                    '--disable-infobars',
+                    '--disable-extensions',
+                    '--disable-gpu',
+                    '--no-sandbox',
+                    '--disable-dev-shm-usage',
+                    '--disable-javascript'
+                );
+            }
+
+            if (this.config.upload.selenium.headless) {
+                this.options.addArguments("--headless");
+            }
         }
     }
 
