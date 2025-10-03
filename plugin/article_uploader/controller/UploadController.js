@@ -40,6 +40,11 @@ class UploadController {
 
     register = (site) => {
         const path = this.pathMap[site];
+        const siteConfig = this.config?.upload?.[site];
+        const enabled = siteConfig === undefined ? true : siteConfig.enabled !== false;
+        if (!enabled) {
+            return;
+        }
         if (path) {
             const uploader = require(path);
             const instance = new uploader(this);

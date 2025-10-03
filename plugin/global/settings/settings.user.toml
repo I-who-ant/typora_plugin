@@ -164,19 +164,19 @@ reconfirm = true
 headless = true
 
 [article_uploader.upload.wordpress]
-enabled = true
+enabled = false
 hostname = "https://blog.bugdesigner.cn"
 loginUrl = "https://blog.bugdesigner.cn/superman/"
 username = "demo"
 password = "demo1"
 
 [article_uploader.upload.cnblog]
-enabled = true
+enabled = false
 username = "demo2"
 password = "demo2"
 
 [article_uploader.upload.csdn]
-enabled = true
+enabled = false
 cookie = "log_Id_pv=27; log_Id_view=857; dc_tos=se1n4s; log_Id_click=37......"
 
 [article_uploader.upload.astro]
