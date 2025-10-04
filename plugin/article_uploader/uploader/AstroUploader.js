@@ -28,13 +28,14 @@ class AstroUploader extends BaseUploaderInterface {
         const filename = this.composeFilename(title, cfg.filename_pattern);
         const targetPath = path.join(targetDir, filename);
 
-        const { frontmatter, body } = this.composeContent(title, content, extraData);
+        const { frontmatter, body, tags } = this.composeContent(title, content, extraData);
 
         fs.mkdirSync(path.dirname(targetPath), { recursive: true });
         fs.writeFileSync(targetPath, `${frontmatter}\n${body}\n`, 'utf-8');
 
         if (cfg.auto_commit && cfg.git_cmd) {
-            await this.runGitCommands(cfg.git_cmd, repoRoot, filename);
+            const relativePath = path.relative(repoRoot, targetPath);
+            await this.runGitCommands(cfg.git_cmd, repoRoot, { filename, filepath: relativePath, tags });
         }
     }
 
@@ -72,6 +73,7 @@ class AstroUploader extends BaseUploaderInterface {
         return {
             frontmatter: frontmatterLines.join('\n'),
             body: content.trim(),
+            tags,
         };
     }
 
@@ -90,9 +92,13 @@ class AstroUploader extends BaseUploaderInterface {
         return (text || '').replace(/'/g, "''");
     }
 
-    async runGitCommands(cmd, cwd, filename) {
+    async runGitCommands(cmd, cwd, context) {
         const notification = new Notification();
-        const replaced = cmd.replaceAll('{filename}', filename);
+        const { filename, filepath, tags } = context;
+        let replaced = cmd.replaceAll('{filename}', filename).replaceAll('{filepath}', filepath);
+        if (Array.isArray(tags)) {
+            replaced = replaced.replaceAll('{tags}', tags.join(','));
+        }
         try {
             execSync(replaced, { cwd, stdio: 'inherit', shell: true });
             notification.showNotification(`Git 操作成功: ${replaced}`, 'success');
