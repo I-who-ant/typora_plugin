@@ -29,13 +29,14 @@ class AstroUploader extends BaseUploaderInterface {
         const targetPath = path.join(targetDir, filename);
 
         const { frontmatter, body, tags } = this.composeContent(title, content, extraData);
+        const { content: bodyWithAssets, assets } = this.utils.relocateImages(body, repoRoot);
 
         fs.mkdirSync(path.dirname(targetPath), { recursive: true });
-        fs.writeFileSync(targetPath, `${frontmatter}\n${body}\n`, 'utf-8');
+        fs.writeFileSync(targetPath, `${frontmatter}\n${bodyWithAssets}\n`, 'utf-8');
 
         if (cfg.auto_commit && cfg.git_cmd) {
             const relativePath = path.relative(repoRoot, targetPath);
-            await this.runGitCommands(cfg.git_cmd, repoRoot, { filename, filepath: relativePath, tags });
+            await this.runGitCommands(cfg.git_cmd, repoRoot, { filename, filepath: relativePath, tags, assets });
         }
     }
 
@@ -94,11 +95,17 @@ class AstroUploader extends BaseUploaderInterface {
 
     async runGitCommands(cmd, cwd, context) {
         const notification = new Notification();
-        const { filename, filepath, tags } = context;
-        let replaced = cmd.replaceAll('{filename}', filename).replaceAll('{filepath}', filepath);
-        if (Array.isArray(tags)) {
-            replaced = replaced.replaceAll('{tags}', tags.join(','));
-        }
+        const { filename, filepath, tags, assets = [] } = context;
+        let replaced = cmd
+            .replaceAll('{filename}', filename)
+            .replaceAll('{filepath}', filepath);
+
+        const assetsArgs = Array.isArray(assets) && assets.length
+            ? assets.map((asset) => `'${asset.relativePath}'`).join(' ')
+            : '';
+        replaced = replaced.replaceAll('{assets}', assetsArgs);
+        replaced = replaced.replaceAll('{tags}', Array.isArray(tags) ? tags.join(',') : '');
+
         try {
             execSync(replaced, { cwd, stdio: 'inherit', shell: true });
             notification.showNotification(`Git 操作成功: ${replaced}`, 'success');

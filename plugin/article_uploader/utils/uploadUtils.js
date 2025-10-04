@@ -93,6 +93,52 @@ class UploadUtils {
         return match ? match[1].trim() : '';
     }
 
+    relocateImages = (content, repoRoot) => {
+        const fs = this.plugin.utils.Package.Fs;
+        const path = this.plugin.utils.Package.Path;
+        const uploads = [];
+        const now = new Date();
+        const year = now.getFullYear().toString();
+        const month = (now.getMonth() + 1).toString().padStart(2, '0');
+        const destDir = path.join(repoRoot, 'public', 'uploads', year, month);
+        const imageRegex = /!\[[^\]]*\]\(([^)]+)\)/g;
+        let updated = content;
+        fs.mkdirSync(destDir, { recursive: true });
+
+        let match;
+        while ((match = imageRegex.exec(content)) !== null) {
+            const original = match[0];
+            let imagePath = match[1].trim();
+            if (!imagePath) continue;
+            if ((imagePath.startsWith('"') && imagePath.endsWith('"')) || (imagePath.startsWith("'") && imagePath.endsWith("'"))) {
+                imagePath = imagePath.slice(1, -1);
+            }
+            if (!path.isAbsolute(imagePath) || !fs.existsSync(imagePath)) {
+                continue;
+            }
+
+            const ext = path.extname(imagePath);
+            const baseName = path.basename(imagePath, ext);
+            let targetName = `${baseName}${ext}`;
+            let targetPath = path.join(destDir, targetName);
+            let index = 1;
+            while (fs.existsSync(targetPath)) {
+                targetName = `${baseName}-${index}${ext}`;
+                targetPath = path.join(destDir, targetName);
+                index += 1;
+            }
+
+            fs.copyFileSync(imagePath, targetPath);
+            const publicPath = `/uploads/${year}/${month}/${targetName}`;
+            const relativePath = path.relative(repoRoot, targetPath);
+            const replacement = original.replace(match[1], publicPath);
+            updated = updated.replace(original, replacement);
+            uploads.push({ absolute: targetPath, publicPath, relativePath });
+        }
+
+        return { content: updated, assets: uploads };
+    }
+
     // 获取签名
     getSign = (uuid, url) => {
         this.lazyLoadCryptoJS();

@@ -185,4 +185,4 @@ repo_root = "/home/seeback/learingProject/seeback/blog/starlight-main/examples/s
 posts_dir = "src/content/posts"
 filename_pattern = "{date}-{slug}.md"
 auto_commit = false
-git_cmd = "git add '{filepath}' && git commit -m 'publish: {filename}' && git push"
+git_cmd = "git add '{filepath}' {assets} && git commit -m 'publish: {filename}' && git push"
