@@ -74,7 +74,7 @@ class UploadUtils {
                 const frontmatter = parts[1];
                 const body = parts.slice(2).join('\n').trim();
                 this.lazyLoadYaml();
-                const meta = this.yaml.load(frontmatter) || {};
+                const meta = this.parseFrontmatter(frontmatter);
                 const title = (meta.title || '').toString().trim() || this.extractTitleFromBody(body);
                 return { title, content: body, extraData: meta };
             }
@@ -91,6 +91,43 @@ class UploadUtils {
     extractTitleFromBody = (body = '') => {
         const match = body.match(/^#\s*(.+)$/m);
         return match ? match[1].trim() : '';
+    }
+
+    parseFrontmatter = (frontmatter) => {
+        const replacements = {
+            '‘': "'",
+            '’': "'",
+            '“': '"',
+            '”': '"',
+            '，': ',',
+        };
+        const normalize = (input) => input.replace(/[‘’“”，]/g, (match) => replacements[match] || match);
+        try {
+            const meta = this.yaml.load(frontmatter) || {};
+            return this.normalizeMeta(meta);
+        } catch (error) {
+            try {
+                const meta = this.yaml.load(normalize(frontmatter)) || {};
+                return this.normalizeMeta(meta);
+            } catch (innerError) {
+                throw error;
+            }
+        }
+    }
+
+    normalizeMeta = (meta = {}) => {
+        if (typeof meta.tags === 'string') {
+            meta.tags = meta.tags
+                .split(/[,，]/)
+                .map((tag) => tag.trim().replace(/^['"]|['"]$/g, ''))
+                .filter(Boolean);
+        }
+        if (Array.isArray(meta.tags)) {
+            meta.tags = meta.tags
+                .map((tag) => (typeof tag === 'string' ? tag.trim().replace(/^['"]|['"]$/g, '') : tag))
+                .filter((tag) => typeof tag === 'string' && tag.length > 0);
+        }
+        return meta;
     }
 
     relocateImages = (content, repoRoot) => {
