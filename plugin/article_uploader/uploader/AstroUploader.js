@@ -110,6 +110,11 @@ class AstroUploader extends BaseUploaderInterface {
             execSync(replaced, { cwd, stdio: 'inherit', shell: true });
             notification.showNotification(`Git 操作成功: ${replaced}`, 'success');
         } catch (error) {
+            const output = `${error.stdout?.toString() || ''}${error.stderr?.toString() || ''}${error.message}`;
+            if (/nothing to commit|no changes added to commit/i.test(output)) {
+                notification.showNotification('没有检测到新的改动，已跳过提交。', 'info');
+                return;
+            }
             notification.showNotification(`Git 操作失败: ${error.message}`, 'error');
             throw error;
         }
