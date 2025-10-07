@@ -55,7 +55,13 @@ class AstroUploader extends BaseUploaderInterface {
     composeContent(title, content, extraData) {
         const meta = extraData && typeof extraData === 'object' ? { ...extraData } : {};
         const date = meta.date || new Date().toISOString().slice(0, 10);
-        const excerpt = meta.excerpt || this.deriveExcerpt(content);
+        const description = typeof meta.description === 'string' ? meta.description : '';
+        const excerptSource = typeof meta.excerpt === 'string' && meta.excerpt.trim().length > 0
+            ? meta.excerpt
+            : description;
+        const excerpt = excerptSource && excerptSource.trim().length > 0
+            ? excerptSource
+            : this.deriveExcerpt(content);
         const tags = Array.isArray(meta.tags) ? meta.tags : [];
         const cover = meta.cover || '';
 
@@ -63,9 +69,12 @@ class AstroUploader extends BaseUploaderInterface {
             '---',
             `title: '${this.escape(title)}'`,
             `date: '${date}'`,
-            `excerpt: '${this.escape(excerpt)}'`,
-            `tags: ${JSON.stringify(tags)}`,
         ];
+        if (description) {
+            frontmatterLines.push(`description: '${this.escape(description)}'`);
+        }
+        frontmatterLines.push(`excerpt: '${this.escape(excerpt)}'`);
+        frontmatterLines.push(`tags: ${JSON.stringify(tags)}`);
         if (cover) {
             frontmatterLines.push(`cover: '${this.escape(cover)}'`);
         }
